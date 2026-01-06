@@ -1,0 +1,40 @@
+{
+  "response": {
+    "ml_recommendations": [
+      {
+        "ba_id": 104829,
+        "course_id": 38765,
+        "course_name": "Sell.",
+        "recommended_content_id": 574327,
+        "recommended_content": "Servicing Multiple Clients",
+        "content_desc": "5 mins\nGive the best client service during the busiest times, ensuring all clients are helped quickly.",
+        "content_name_french": "No french content name",
+        "content_description_french": "No french training description",
+        "recommended_content_url": "https://link.zunos.com/mobile/link/media/sephora?mediaid=574327",
+        "is_recommended_content_completed": false,
+        "assesment_start_date": "2025-11-03T00:00:00",
+        "assesment_end_date": "2025-12-01T00:00:00",
+        "recommendation_created_at": "2025-12-02T00:00:00",
+        "order": 1,
+        "assesment_message": "The recommendation was based on SPLH tier level calculated between 2025-11-03 and 2025-12-01.",
+        "due_date": "2025-12-14T00:00:00",
+        "due_date_message": "Complete by 12/14/25."
+      }
+    ],
+    "coaching_note": {
+      "en": "Hi, you\u2019re showing solid performance in Tier 3, which is a good base to build from. To step up, try balancing your time to assist more clients each hour and use the \u201cwhat, why, and how\u201d to teach product benefits clearly. Completing assigned training recommendations can boost your confidence and help improve results, keep pushing forward! You\u2019ve got this!\n\n",
+      "fr": "\n\nBonjour, vous affichez une performance solide en Tier 3, ce qui est une bonne base pour progresser. Pour passer au niveau sup\u00e9rieur, essayez de mieux r\u00e9partir votre temps pour assister plus de clients chaque heure et utilisez le \u00ab quoi, pourquoi et comment \u00bb pour enseigner clairement les avantages des produits. Terminer les formations attribu\u00e9es renforcera votre confiance et am\u00e9liorera vos r\u00e9sultats, continuez ainsi ! Vous pouvez le faire !"
+    }
+  },
+  "timing": {
+    "preProcessing": 0,
+    "wait": 25,
+    "execution": 7793,
+    "functionInternal": 7369
+  },
+  "apiContext": {
+    "serviceId": "mltr",
+    "endpointId": "v3",
+    "serviceGeneration": "v45"
+  }
+}
