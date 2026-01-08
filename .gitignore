@@ -45,6 +45,14 @@ env/
 generated_files/*.csv
 !generated_files/.gitkeep
 
+# Downloaded files
+downloaded_files/*.csv
+!downloaded_files/.gitkeep
+
+# Temp files from download script
+temp_files/
+!temp_files/.gitkeep
+
 # Environment variables
 .env
 .env.local

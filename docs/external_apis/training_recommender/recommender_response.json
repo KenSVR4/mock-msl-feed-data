@@ -7,7 +7,7 @@
         "course_name": "Sell.",
         "recommended_content_id": 574327,
         "recommended_content": "Servicing Multiple Clients",
-        "content_desc": "5 mins\nGive the best client service during the busiest times, ensuring all clients are helped quickly.",
+        "content_desc": "5 mins Give the best client service during the busiest times, ensuring all clients are helped quickly.",
         "content_name_french": "No french content name",
         "content_description_french": "No french training description",
         "recommended_content_url": "https://link.zunos.com/mobile/link/media/sephora?mediaid=574327",
@@ -22,12 +22,12 @@
       }
     ],
     "coaching_note": {
-      "en": "Hi, you\u2019re showing solid performance in Tier 3, which is a good base to build from. To step up, try balancing your time to assist more clients each hour and use the \u201cwhat, why, and how\u201d to teach product benefits clearly. Completing assigned training recommendations can boost your confidence and help improve results, keep pushing forward! You\u2019ve got this!\n\n",
-      "fr": "\n\nBonjour, vous affichez une performance solide en Tier 3, ce qui est une bonne base pour progresser. Pour passer au niveau sup\u00e9rieur, essayez de mieux r\u00e9partir votre temps pour assister plus de clients chaque heure et utilisez le \u00ab quoi, pourquoi et comment \u00bb pour enseigner clairement les avantages des produits. Terminer les formations attribu\u00e9es renforcera votre confiance et am\u00e9liorera vos r\u00e9sultats, continuez ainsi ! Vous pouvez le faire !"
+      "en": "Hi, youre showing solid performance in Tier 3, which is a good base to build from. To step up, try balancing your time to assist more clients each hour and use the what, why, and how to teach product benefits clearly. Completing assigned training recommendations can boost your confidence and help improve results, keep pushing forward! Youve got this!",
+      "fr": "Bonjour, vous affichez une performance solide en Tier 3, ce qui est une bonne base pour progresser. Pour passer au niveau suprieur, essayez de mieux rpartir votre temps pour assister plus de clients chaque heure et utilisez le quoi, pourquoi et comment pour enseigner clairement les avantages des produits. Terminer les formations attribues renforcera votre confiance et amliorera vos rsultats, continuez ainsi ! Vous pouvez le faire !"
     }
   },
   "timing": {
-    "preProcessing": 0,
+    "preProcessing": 0,s
     "wait": 25,
     "execution": 7793,
     "functionInternal": 7369

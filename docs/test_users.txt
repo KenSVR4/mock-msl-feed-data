@@ -1,0 +1,32 @@
+user name	First Name	Last Name	Title	Store	Country	Employee ID	physicalDeliveryOfficeName (store name)	Locale	Password
+badash.test1	Dash	Test1	Store Manager	0012	US	104829	STONERIDGE	US English	P@ssw0rd2025$$
+badash.test2	Dash	Test2	Sales and Service Coordinator	0382	US	151557	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test3	Dash	Test3	Sales and Service Leader	0382	US	75412	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test4	Dash	Test4	Operations Associate	0382	US	312675	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test5	Dash	Test5	Operations Leader	0382	US	352205	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test6	Dash	Test6	Beauty Advisor	0382	US	63492	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test7	Dash	Test7	Beauty Advisor	0382	US	375833	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test8	Dash	Test8	Licensed Beauty Advisor	0382	US	155810	Embarcadero (CA)	US English	P@ssw0rd2025$$
+badash.test9	Dash	Test9	Store Director	0508	CA	298211	BLOOR STREET	CA English	P@ssw0rd2025$$
+badash.test10	Dash	Test10	Senior Artist	1636	CA	88563	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test11	Dash	Test11	Senior Skincare Advisor	1636	CA	86994	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test12	Dash	Test12	Cash Wrap Coordinator	1636	CA	359755	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test13	Dash	Test13	Services Lead, Stores	1636	CA	221603	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test14	Dash	Test14	Beauty Advisor	1636	CA	359779	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test15	Dash	Test15	Paid Services Beauty Advisor	1636	CA	314078	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test16	Dash	Tést16	Stage Experience Lead	1636	CA	304617	The Well (ON)	CA English	P@ssw0rd2025$$
+badash.test17	Dash	Tést17	Store Director	0866	CA	85038	SEPHORA QUEBEC CAPITALE	CA French	P@ssw0rd2025$$
+badash.test18	Dash	Tést18	Talent and Business Operations Manager, Stores	0882	CA	175342	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test19	Dash	Tést19	Stage Experience and Services Manager, Stores	0882	CA	173789	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test20	Dash	Tést20	Stage Experience Lead	0882	CA	263634	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test21	Dash	Tést21	Services Manager, Stores	0882	CA	266064	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test22	Dash	Tést22	Services Lead, Stores	0882	CA	284927	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test23	Dash	Tést23	Beauty Advisor	0882	CA	302687	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test24	Dash	Tést24	Paid Services Beauty Advisor	0882	CA	260268	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+badash.test25	Dash	Tést25	Temporary Beauty Advisor	0882	CA	266837	Vaudreuil (QC)	CA French	P@ssw0rd2025$$
+scangun.1	Dash	scangun.1	Store Manager	0422	US	109828	Mall of Georgia (GA)	US English	p@ssw0rd2
+Scangun.2	Dash	scangun.2	Sales and Service Coordinator 	0052	US	63419	SEPHORA BURLINGAME	US English	p@ssw0rd2
+scangun.cashier1	Dash	scangun.cashier1	Beauty Advisor	0422	US	353926	Mall of Georgia (GA) 	US English	p@ssw0rd2
+scangun.cashier2	Dash	scangun.cashier2	Interim Sales and Service Coordinator	0760	US	370068	Natick (MA)	US English	p@ssw0rd2
+
+

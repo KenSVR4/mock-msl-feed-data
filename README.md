@@ -24,6 +24,7 @@ Employees are classified by their engagement level with training:
 btc_fake/
 ├── actors/
 │   └── employees.csv          # Employee population with IDs and types
+├── downloaded_files/          # Downloaded CourseCatalog files from SFTP
 ├── generated_files/           # Output directory for ContentUserCompletion files
 ├── docs/                      # Documentation and samples
 ├── btc_simulation.ipynb       # Main Jupyter notebook
@@ -57,6 +58,63 @@ source venv/bin/activate  # On macOS/Linux
 pip install -r requirements.txt
 ```
 
+## Preprocessing
+
+Before running the main simulation, you can download files from the SFTP server using either the notebook or the command-line script.
+
+### Files Downloaded:
+
+1. **CourseCatalog** - Training curriculum elements like Courses and components
+2. **StandAloneContent** - All training content (videos, PDFs, documents)
+
+**SFTP Configuration:**
+- Host: `sftp.sephora.com`
+- Remote Path: `/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive`
+- User: `SephoraMSL`
+- Password: Stored in `.env` file
+
+**Setup:**
+1. Copy `.env.example` to `.env`
+2. Add your SFTP password: `SFTP_PASSWORD=your_password_here`
+
+**File Formats:**
+- CourseCatalog: `CourseCatalog_V2_YYYY_M_DD_1_random.csv`
+- StandAloneContent: `StandAloneContent_v2_YYYY_M_DD_1_random.csv`
+- The system identifies files based on the date in the filename
+
+### Option 1: Using the download.sh Script
+
+Download files for a date range using the command-line script:
+
+```bash
+# Download today's files only (default)
+./download.sh
+
+# Download files from today and yesterday (2 days total)
+./download.sh 1
+
+# Download files from the last 7 days (today through 7 days ago)
+./download.sh 7
+
+# Download files from the last 31 days (today through 31 days ago)
+./download.sh 31
+```
+
+**Requirements:**
+- `lftp` (recommended) or `sshpass` for automated downloads
+- macOS: `brew install lftp`
+- Linux: `sudo apt-get install lftp`
+
+The script will:
+- Connect to the SFTP server
+- Download all files matching the target date patterns
+- Save files to `temp_files/` directory
+- Display a summary of downloaded files
+
+### Option 2: Using the Jupyter Notebook
+
+The notebook (cells 4-5) will automatically download the most recent files when executed
+
 ## Running the Simulation
 
 ### Option 1: Using VS Code or Cursor
@@ -80,8 +138,9 @@ jupyter notebook
 
 The simulation will:
 
-1. Read all employees from `actors/employees.csv`
-2. For each employee:
+1. Download the most recent CourseCatalog file from SFTP server to `downloaded_files/`
+2. Read all employees from `actors/employees.csv`
+3. For each employee:
    - Call the training recommendation API
    - Based on employee type, complete the appropriate number of trainings
    - Record completions with start and end timestamps

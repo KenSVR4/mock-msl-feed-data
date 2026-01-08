@@ -10,6 +10,9 @@ The coding standards come from the BAPH project which is in a folder on level up
 ## architecture
 The project is a python notebook. An engineer should be able to run the project on macOS. The instructions for settting up dependencies  will be contained in README.md.
 
+## preprocessing
+The process will download most recent course_catalog file from SFTP location into a local directory. 
+
 ## execution
 The process knows about the employee popluation. For each employee the recommendation_api will provide training recommendations. An employee has a type and based on that type the employee will complete some or all training. When employee completes training the process will write a line into the generated_files folder in a new ContentUserCompletion file in .csv format. 
 At the end the process will summarize for each user the training they completed. One one line it prints the employee_id, and then the training courses completed. It prints the name of the new generated file. 
