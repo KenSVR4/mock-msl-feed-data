@@ -4,7 +4,7 @@ Each time the process runs it will create a new file and the filename will have 
 All of the employees completed transactions will be appended into the one new output file.
 
 ## File description
-An example file is samples/ContentUserCompletion_V2_2025_10_28_1_10e4ec.csv
+An example file is ../sample_files/ContentUserCompletion_V2_2025_10_28_1_10e4ec.csv
 Fields:
 UserId the employee_id
 ContentId the training identifier like the content_id. The value has commas. It is not an integer. It has commas to help human readability. AZZ

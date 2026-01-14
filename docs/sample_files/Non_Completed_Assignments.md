@@ -9,7 +9,7 @@ The Manager actor knows how to create a NonCompletedAssignments file each time t
 Each time the process runs it will create a new file and the filename will have the Year (YY) Month (MM) day (DD) and a randmon (RAND) six character alphanumeric value. For example Non_Completed_Assignments_V2_2026_1_7_1_533f6b.csv
 
 ## File description
-An example file is samples/ContentUserCompletion_V2_2025_10_28_1_10e4ec.csv
+An example file is sample_files/Non_Completed_Assignments_V2_2026_1_7_1_533f6b.csv
 Fields:
 UserId is the employee_id
 CreatedDate_text will be the current time minus 5 minutes.
