@@ -18,11 +18,12 @@ This project simulates real-world employees completing training courses and gene
 The btc_fake project simulates employees who spend time taking training courses. The system:
 - Downloads training content files from SFTP server (preprocessing)
 - Reads employee population from CSV
+- Manager assigns training content to all employees
+- Generates NonCompletedAssignments CSV file with manager assignments
 - Gets training recommendations from an external API
 - Simulates training completion based on employee type
 - Generates ContentUserCompletion CSV files with completion records
-- Manager assigns training content to all employees
-- Generates NonCompletedAssignments CSV file with manager assignments
+- Updates NonCompletedAssignments file to remove completed assignments
 
 ## Employee Types
 
@@ -32,7 +33,7 @@ Employees are classified by their engagement level with training. The system sim
 - **Type B**: Completes one training (from combined manager and AI list)
 - **Type F**: Completes no training
 
-**Note**: The `input/employees.csv` file supports comment rows. Any row where the employee_id starts with '#' will be ignored during processing. See `docs/input/employees_file_format.md` for details.
+**Note**: The `input/employees.csv` file supports comment rows. Any row where the employee_id starts with '#' will be ignored during processing. See `docs/actors/employees_file_format.md` for details.
 
 ## Project Structure
 
@@ -74,6 +75,89 @@ source venv/bin/activate  # On macOS/Linux
 pip install -r requirements.txt
 ```
 
+### Environment Configuration
+
+This project supports multiple environments (DEV, QA, PROD) with different configurations for each.
+
+#### Quick Start
+
+1. **Choose your environment** and copy the appropriate template:
+   ```bash
+   # For DEV/QA (default)
+   cp .env.dev.example .env
+
+   # For QA (alternate)
+   cp .env.qa.example .env
+
+   # For PROD
+   cp .env.prod.example .env
+   ```
+
+2. **Fill in required credentials** in `.env`:
+   - `DATABRICKS_TOKEN`: Personal access token from Databricks
+   - `DATABRICKS_HOST`: Your Databricks workspace hostname
+   - `DATABRICKS_HTTP_PATH`: SQL warehouse HTTP path
+   - `SFTP_INBOUND_PASSWORD`: SFTP inbound server password
+
+3. **Environment-specific values** (already configured in templates):
+   - `API_BASE_URL`: ML Training Recommender API (**different in PROD**)
+   - `DATABRICKS_CATALOG`: Catalog name (dev/qa/prod)
+   - `SFTP_INBOUND_REMOTE_PATH`: Remote SFTP path (dev/qa/prod)
+
+📖 **For detailed configuration guide**: See [docs/ENVIRONMENT_CONFIGURATION.md](docs/ENVIRONMENT_CONFIGURATION.md)
+
+#### All Configurable Variables
+
+**ML Training Recommender API:**
+- `API_BASE_URL` - API base URL (⚠️ **PROD has `/public` in URL**)
+- `API_ENDPOINT` - API endpoint path
+- `API_TIMEOUT` - Request timeout in seconds
+
+**File Paths:**
+- `EMPLOYEES_FILE` - Input employees CSV file
+- `OUTPUT_DIR` - Output directory for generated files
+- `SFTP_LOCAL_DIR` - Local directory for downloaded files
+- `USER_COMPLETION_TEMPLATE_FILE` - UserCompletion template file
+
+**Databricks:**
+- `DATABRICKS_TOKEN` - Personal access token (**required**)
+- `DATABRICKS_HOST` - Workspace hostname (**required**)
+- `DATABRICKS_HTTP_PATH` - SQL warehouse path (**required**)
+- `DATABRICKS_CATALOG` - Catalog name (retail_systems_dev/qa/prod)
+- `DATABRICKS_SCHEMA` - Schema name
+
+**SFTP Inbound Server:**
+- `SFTP_INBOUND_HOST` - Server hostname
+- `SFTP_INBOUND_USER` - Username
+- `SFTP_INBOUND_PASSWORD` - Password (**required**)
+- `SFTP_INBOUND_REMOTE_PATH` - Remote directory path
+
+#### Running Locally (VS Code with Databricks Extension)
+
+1. **VS Code Databricks Extension** (Recommended):
+   - Install the Databricks extension in VS Code
+   - Connect to your Databricks workspace
+   - Run the notebook locally while querying remote Databricks tables
+
+**Note**: If Databricks credentials are not configured, the system will skip the Databricks query and only use newly selected manager assignments.
+
+#### Running in Databricks
+
+To run this notebook directly in Databricks instead of VS Code:
+
+📖 **See comprehensive migration guide:** [docs/DATABRICKS_MIGRATION.md](docs/DATABRICKS_MIGRATION.md)
+
+🚀 **Quick reference with code snippets:** [docs/DATABRICKS_QUICK_REFERENCE.md](docs/DATABRICKS_QUICK_REFERENCE.md)
+
+**Key changes required:**
+- Replace `.env` file with Databricks secrets (`dbutils.secrets.get()`)
+- Update file paths to DBFS (`/dbfs/FileStore/btc_simulation/...`)
+- Replace `databricks-sql-connector` with Spark SQL (`spark.sql()`)
+- Upload input files to DBFS
+- Configure cluster libraries (paramiko)
+
+The migration guides provide complete step-by-step instructions with copy-paste code examples.
+
 ## Preprocessing
 
 Before running the main simulation, you can download files from the SFTP server using either the notebook or the command-line script.
@@ -83,15 +167,24 @@ Before running the main simulation, you can download files from the SFTP server 
 1. **CourseCatalog** - Training curriculum elements like Courses and components
 2. **StandAloneContent** - All training content (videos, PDFs, documents)
 
-**SFTP Configuration:**
-- Host: `sftp.sephora.com`
-- Remote Path: `/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive`
-- User: `SephoraMSL`
-- Password: Stored in `.env` file
+**SFTP Inbound Server Configuration:**
+
+All SFTP inbound server settings are configurable via environment variables in `.env`:
+- `SFTP_INBOUND_HOST`: Server hostname (default: `sftp.sephora.com`)
+- `SFTP_INBOUND_USER`: Username (default: `SephoraMSL`)
+- `SFTP_INBOUND_PASSWORD`: Password (required)
+- `SFTP_INBOUND_REMOTE_PATH`: Remote directory path (default: `/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive`)
 
 **Setup:**
 1. Copy `.env.example` to `.env`
-2. Add your SFTP password: `SFTP_PASSWORD=your_password_here`
+2. Configure SFTP settings in `.env`:
+   ```bash
+   SFTP_INBOUND_HOST=sftp.sephora.com
+   SFTP_INBOUND_USER=SephoraMSL
+   SFTP_INBOUND_PASSWORD=your_password_here
+   SFTP_INBOUND_REMOTE_PATH=/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive
+   ```
+3. The defaults will work for most cases - you only need to set `SFTP_INBOUND_PASSWORD`
 
 **File Formats:**
 - CourseCatalog: `CourseCatalog_V2_YYYY_M_DD_1_random.csv`
@@ -157,9 +250,16 @@ The simulation will:
 1. **Preprocessing**: Download the most recent CourseCatalog and StandAloneContent files from SFTP server to `downloaded_files/`
 
 2. **Manager Assignments**:
-   - Manager selects up to 3 training contents (where Daily_Dose_BA = TRUE)
-   - Assigns these contents to all employees
-   - Generates NonCompletedAssignments CSV file
+   - Queries Databricks `content_assignments` AND `content_completion` tables
+   - Calculates open assignments (assignments - completions) for each employee
+   - Manager selects up to 3 new Daily Dose training contents (where Daily_Dose_BA = TRUE)
+   - Checks for Daily Dose conflicts:
+     - Skips employees who completed ANY Daily Dose this week (queries content_completion)
+     - Skips employees who have open Daily Dose assignments for this week
+   - Assigns Daily Dose to eligible employees only
+   - Assigns 1 random non-Daily Dose content to ALL employees
+   - Combines Databricks open assignments with new manager assignments
+   - Generates NonCompletedAssignments CSV file (Databricks open assignments first, then new assignments)
 
 3. **Employee Training Simulation**:
    - Read all employees from `input/employees.csv`
@@ -227,6 +327,12 @@ This project follows coding standards from the BAPH project located one folder l
 - Dates are in ISO-8601 format
 - New output files are generated each time the simulation runs:
   - ContentUserCompletion file: Records completed trainings
-  - NonCompletedAssignments file: Records manager assignments
+  - NonCompletedAssignments file: Records manager assignments (updated to remove completed assignments)
 - The 6-character random suffix ensures unique filenames
 - Manager assigns up to 3 training contents (with Daily_Dose_BA=TRUE) to all employees
+- **NonCompletedAssignments File Behavior**:
+  - Initially contains all manager assignments (from Databricks + newly created)
+  - After employees complete training, the file is automatically updated
+  - Completed assignments are removed from the file
+  - Only truly "non-completed" assignments remain
+  - If all assignments are completed, the file will contain only headers

@@ -2,13 +2,18 @@
 Employees work here and they sell merchandise. But they also take training courses that make them better at selling.
 
 ## Employee Types
-Employees are classified as a certain type and the type determines their aggresiveness on taking training.
+Employees are classified as a certain type and the type determines their aggressiveness on taking training.
 Type A - complete every assignment immediately
 Type B - complete one assignment
 Type F - complete no assignments
 
 ## How Employee completes training
 When an employee completes a training they add a record to the completed_assignments file
+
+## How Employees are free to skip certain training recommended to them. 
+This applies only to recommended training that comes from the ML recommender API - not
+to trainings that are assigned by a Manager.
+When an employee detects they have a content assignment that is recommended by ML, they may decide to skip completing the training. They make the decision to skip completing the training if they have completed that training recently. If they completed the training in the _ today or in the prior 12 days _ then they decide to skip it. When they skip it, then they communicate why. The employee knows their history of completing training by having access to content_completion_table.
 
 ## Employee Population
 The population of employees who work here are in file input/employees.csv. It is a .csv file with a header row.
