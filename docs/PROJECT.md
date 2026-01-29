@@ -19,3 +19,44 @@ At the end the process will summarize for each user the training they completed.
 
 ## User interface
 The process can be run as a jupyter notebook using a tool like Curstor or VS Code. It can also be run using a browser that encapsulates the notebook. 
+
+## Runtime
+
+### Local Development with VS Code
+Developers will run this project locally using VS Code with the Databricks extension installed:
+
+1. **Setup**:
+   - Install the Databricks extension in VS Code
+   - Configure `.env` file with Databricks connection details (token, host, http_path)
+   - Connect to Databricks workspace through VS Code extension
+
+2. **Development Workflow**:
+   - Run the Jupyter notebook locally in VS Code
+   - The notebook connects to Databricks to query the `content_assignments` table
+   - Downloads files from SFTP server
+   - Calls the ML Training Recommender API
+   - Generates output files in `generated_files/` directory
+
+3. **Testing**:
+   - Use DEV2 environment (`retail_systems_dev` catalog)
+   - Validate queries against `content_assignments` table
+   - Test full workflow end-to-end locally
+
+### Databricks Native Execution
+Eventually, the project will be packaged and deployed to run natively inside Databricks:
+
+1. **Packaging**:
+   - Convert Jupyter notebook to Databricks notebook format
+   - Package dependencies
+   - Configure environment-specific settings (catalog, schema)
+
+2. **Deployment**:
+   - Upload to Databricks workspace
+   - Configure as Databricks job/workflow
+   - Set up schedule for automated execution
+
+3. **Execution**:
+   - Runs directly in Databricks compute cluster
+   - Accesses tables natively without SQL connector
+   - Can be scheduled or triggered manually
+   - Output files written to Databricks File System (DBFS) or mounted storage
