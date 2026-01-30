@@ -101,6 +101,38 @@ This document describes all configurable environment variables for the BTC Fake 
 
 ---
 
+### 5. SFTP Outbound Server (Publishing)
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `SFTP_OUTBOUND_HOST` | No | `internal-sftp.sephoraus.com` | SFTP outbound server hostname |
+| `SFTP_OUTBOUND_USER` | No | `SephoraRDIInternal` | SFTP outbound username |
+| `SFTP_OUTBOUND_PASSWORD` | **YES** | *(none)* | SFTP outbound password |
+| `SFTP_OUTBOUND_REMOTE_PATH` | No | `/inbound/BTC/retailData/prod/...` | Remote directory path (**varies by environment**) |
+| `SFTP_PUBLISH_ENABLED` | No | `true` | Enable/disable file publishing |
+
+#### Environment-Specific Values
+
+| Environment | SFTP_OUTBOUND_REMOTE_PATH |
+|-------------|---------------------------|
+| **DEV** | `/inbound/BTC/retailData/dev/vendor/mySephoraLearningV2` |
+| **QA** | `/inbound/BTC/retailData/qa/vendor/mySephoraLearningV2` |
+| **PROD** | `/inbound/BTC/retailData/prod/vendor/mySephoraLearningV2` |
+
+#### Publishing Control
+
+To **enable** publishing (upload files after generation):
+```bash
+SFTP_PUBLISH_ENABLED=true
+```
+
+To **disable** publishing (skip upload, only generate files locally):
+```bash
+SFTP_PUBLISH_ENABLED=false
+```
+
+---
+
 ## Environment Comparison Matrix
 
 ### Required Changes Per Environment
@@ -110,8 +142,10 @@ This document describes all configurable environment variables for the BTC Fake 
 | `API_BASE_URL` | devqa URL | devqa URL | **prod URL** | ⚠️ **Different in PROD** |
 | `DATABRICKS_CATALOG` | `_dev` | `_qa` | `_prod` | Suffix changes |
 | `SFTP_INBOUND_REMOTE_PATH` | `/dev/` | `/qa/` | `/prod/` | Path segment changes |
+| `SFTP_OUTBOUND_REMOTE_PATH` | `/dev/` | `/qa/` | `/prod/` | Path segment changes |
 | Databricks credentials | DEV workspace | QA workspace | PROD workspace | All different |
-| SFTP password | DEV password | QA password | PROD password | All different |
+| SFTP inbound password | DEV password | QA password | PROD password | All different |
+| SFTP outbound password | DEV password | QA password | PROD password | All different |
 
 ---
 
@@ -131,10 +165,16 @@ Before running the notebook in a new environment, verify:
 - [ ] Catalog name matches environment (dev/qa/prod)
 - [ ] You have SELECT permission on `content_assignments` table
 
-### ✅ SFTP Configuration
+### ✅ SFTP Inbound Configuration
 - [ ] Password is correct for the environment
 - [ ] Remote path exists on SFTP server
 - [ ] Network access to SFTP server (port 22)
+
+### ✅ SFTP Outbound Configuration (Publishing)
+- [ ] Outbound password is correct for the environment
+- [ ] Remote path exists on SFTP outbound server
+- [ ] Network access to SFTP outbound server (port 22)
+- [ ] `SFTP_PUBLISH_ENABLED` is set to desired value (true/false)
 
 ### ✅ File Paths
 - [ ] `EMPLOYEES_FILE` exists and contains valid data
@@ -171,6 +211,20 @@ Before running the notebook in a new environment, verify:
 
 **Problem**: `Directory not found`
 - **Check**: Does `SFTP_INBOUND_REMOTE_PATH` exist?
+- **Check**: Is the path correct for your environment (dev/qa/prod)?
+
+### SFTP Outbound Publish Fails
+
+**Problem**: `Publishing disabled` message
+- **Check**: Is `SFTP_PUBLISH_ENABLED=true` in `.env`?
+- **Note**: This is expected if you intentionally disabled publishing
+
+**Problem**: `Authentication failed` during publishing
+- **Check**: Is `SFTP_OUTBOUND_PASSWORD` correct?
+- **Check**: Is the username correct for this environment?
+
+**Problem**: `Directory not found` during publishing
+- **Check**: Does `SFTP_OUTBOUND_REMOTE_PATH` exist?
 - **Check**: Is the path correct for your environment (dev/qa/prod)?
 
 ---
@@ -248,6 +302,11 @@ DATABRICKS_SCHEMA = "store_enablement"
 SFTP_INBOUND_HOST = "sftp.sephora.com"
 SFTP_INBOUND_USER = "SephoraMSL"
 SFTP_INBOUND_REMOTE_PATH = "/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive"
+
+SFTP_OUTBOUND_HOST = "internal-sftp.sephoraus.com"
+SFTP_OUTBOUND_USER = "SephoraRDIInternal"
+SFTP_OUTBOUND_REMOTE_PATH = "/inbound/BTC/retailData/prod/vendor/mySephoraLearningV2"
+SFTP_PUBLISH_ENABLED = "true"
 ```
 
 💡 Defaults work for DEV environment - only credentials need to be added!

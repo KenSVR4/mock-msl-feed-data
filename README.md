@@ -132,6 +132,13 @@ This project supports multiple environments (DEV, QA, PROD) with different confi
 - `SFTP_INBOUND_PASSWORD` - Password (**required**)
 - `SFTP_INBOUND_REMOTE_PATH` - Remote directory path
 
+**SFTP Outbound Server (Publishing):**
+- `SFTP_OUTBOUND_HOST` - Server hostname
+- `SFTP_OUTBOUND_USER` - Username
+- `SFTP_OUTBOUND_PASSWORD` - Password (**required**)
+- `SFTP_OUTBOUND_REMOTE_PATH` - Remote directory path
+- `SFTP_PUBLISH_ENABLED` - Enable/disable publishing (true/false)
+
 #### Running Locally (VS Code with Databricks Extension)
 
 1. **VS Code Databricks Extension** (Recommended):
@@ -284,6 +291,65 @@ The simulation will:
    - Each employee's ID and completed training courses (with source: manager or AI)
    - Manager assignment details
    - Names of generated files
+
+6. **Postprocessing - Publish Files** (Optional):
+   - Uploads generated files to SFTP outbound server
+   - Only runs if `SFTP_PUBLISH_ENABLED=true` in `.env`
+   - Can be bypassed by setting `SFTP_PUBLISH_ENABLED=false`
+   - Files published:
+     - ContentUserCompletion CSV
+     - NonCompletedAssignments CSV
+     - UserCompletion CSV
+   - Server configured via environment variables (SFTP_OUTBOUND_*)
+
+## Postprocessing - Publishing Files
+
+After successfully generating output files, the process can optionally publish them to an SFTP outbound server. This step can be enabled or bypassed using a runtime flag.
+
+### Publishing Configuration
+
+**SFTP Outbound Server Settings:**
+
+All SFTP outbound server settings are configurable via environment variables in `.env`:
+- `SFTP_OUTBOUND_HOST`: Server hostname (default: `internal-sftp.sephoraus.com`)
+- `SFTP_OUTBOUND_USER`: Username (default: `SephoraRDIInternal`)
+- `SFTP_OUTBOUND_PASSWORD`: Password (required)
+- `SFTP_OUTBOUND_REMOTE_PATH`: Remote directory path (default: `/inbound/BTC/retailData/prod/vendor/mySephoraLearningV2`)
+- `SFTP_PUBLISH_ENABLED`: Enable/disable publishing (default: `true`)
+
+### Setup for Publishing
+
+1. Configure SFTP outbound settings in `.env`:
+   ```bash
+   SFTP_OUTBOUND_HOST=internal-sftp.sephoraus.com
+   SFTP_OUTBOUND_USER=SephoraRDIInternal
+   SFTP_OUTBOUND_PASSWORD=your_password_here
+   SFTP_OUTBOUND_REMOTE_PATH=/inbound/BTC/retailData/prod/vendor/mySephoraLearningV2
+   SFTP_PUBLISH_ENABLED=true
+   ```
+
+2. The defaults will work for most cases - you only need to set `SFTP_OUTBOUND_PASSWORD`
+
+### Enable/Disable Publishing
+
+To **enable** publishing (upload files after generation):
+```bash
+SFTP_PUBLISH_ENABLED=true
+```
+
+To **disable** publishing (skip upload, only generate files locally):
+```bash
+SFTP_PUBLISH_ENABLED=false
+```
+
+### Files Published
+
+When publishing is enabled, the following files are uploaded to the SFTP outbound server:
+1. **ContentUserCompletion CSV** - Completed training records
+2. **NonCompletedAssignments CSV** - Open/incomplete assignments
+3. **UserCompletion CSV** - Dummy file required by vendor format
+
+The files are uploaded to the remote path specified in `SFTP_OUTBOUND_REMOTE_PATH`.
 
 ## API Configuration
 
