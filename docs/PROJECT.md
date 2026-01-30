@@ -17,6 +17,11 @@ The process will download most recent course_catalog file from SFTP location int
 The process knows about the employee popluation. For each employee the recommendation_api will provide training recommendations. An employee has a type and based on that type the employee will complete some or all training. When employee completes training the process will write a line into the generated_files folder in a new ContentUserCompletion file in .csv format. 
 At the end the process will summarize for each user the training they completed. One one line it prints the employee_id, and then the training courses completed. It prints the name of the new generated file. 
 
+## postprocessing
+After successfully downloading files and then creating files, the process can publish those files. 
+The postprocessing publish step can be bypassed if a runtime flag was set to bypass publishing.
+The publishing is done by using SFTP protocol. 
+
 ## User interface
 The process can be run as a jupyter notebook using a tool like Curstor or VS Code. It can also be run using a browser that encapsulates the notebook. 
 
