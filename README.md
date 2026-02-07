@@ -148,23 +148,6 @@ This project supports multiple environments (DEV, QA, PROD) with different confi
 
 **Note**: If Databricks credentials are not configured, the system will skip the Databricks query and only use newly selected manager assignments.
 
-#### Running in Databricks
-
-To run this notebook directly in Databricks instead of VS Code:
-
-📖 **See comprehensive migration guide:** [docs/DATABRICKS_MIGRATION.md](docs/DATABRICKS_MIGRATION.md)
-
-🚀 **Quick reference with code snippets:** [docs/DATABRICKS_QUICK_REFERENCE.md](docs/DATABRICKS_QUICK_REFERENCE.md)
-
-**Key changes required:**
-- Replace `.env` file with Databricks secrets (`dbutils.secrets.get()`)
-- Update file paths to DBFS (`/dbfs/FileStore/btc_simulation/...`)
-- Replace `databricks-sql-connector` with Spark SQL (`spark.sql()`)
-- Upload input files to DBFS
-- Configure cluster libraries (paramiko)
-
-The migration guides provide complete step-by-step instructions with copy-paste code examples.
-
 ## Preprocessing
 
 Before running the main simulation, you can download files from the SFTP server using either the notebook or the command-line script.
@@ -293,13 +276,12 @@ The simulation will:
    - Names of generated files
 
 6. **Postprocessing - Publish Files** (Optional):
-   - Uploads generated files to SFTP outbound server
+   - Uploads generated files AND downloaded files to SFTP outbound server
    - Only runs if `SFTP_PUBLISH_ENABLED=true` in `.env`
    - Can be bypassed by setting `SFTP_PUBLISH_ENABLED=false`
    - Files published:
-     - ContentUserCompletion CSV
-     - NonCompletedAssignments CSV
-     - UserCompletion CSV
+     - Generated: ContentUserCompletion CSV, NonCompletedAssignments CSV, UserCompletion CSV
+     - Downloaded: CourseCatalog CSV, StandAloneContent CSV
    - Server configured via environment variables (SFTP_OUTBOUND_*)
 
 ## Postprocessing - Publishing Files
@@ -345,9 +327,15 @@ SFTP_PUBLISH_ENABLED=false
 ### Files Published
 
 When publishing is enabled, the following files are uploaded to the SFTP outbound server:
+
+**Generated Files:**
 1. **ContentUserCompletion CSV** - Completed training records
 2. **NonCompletedAssignments CSV** - Open/incomplete assignments
 3. **UserCompletion CSV** - Dummy file required by vendor format
+
+**Downloaded Files (from preprocessing):**
+4. **CourseCatalog CSV** - Training curriculum downloaded from SFTP inbound
+5. **StandAloneContent CSV** - Training content catalog downloaded from SFTP inbound
 
 The files are uploaded to the remote path specified in `SFTP_OUTBOUND_REMOTE_PATH`.
 
