@@ -6,6 +6,7 @@ Manager will give up to 3 Contents to all the employees.
 The manager tries to find 3 Contents to assign to employees.
 A Content is chosen only if the field Daily_Dose_BA for that Content is TRUE.
 Content with the most recent date in the field CreateDate are prioritized over older ones.
+The assignment window is now a full 7-day week from Monday 1:15 AM to the following Monday 1:03 AM UTC
 
 ## manager saves the assignments into a new file
 The Manager knows how to fashion a NonCompletedAssignments file and save it into the directory 'generated_files'

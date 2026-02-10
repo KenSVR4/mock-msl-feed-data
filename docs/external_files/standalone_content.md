@@ -9,7 +9,7 @@ month, and day value separated by underscore. And then there is a sequence numbe
 
 ## Processing
 The system will connect to SFTP server, and pick the standalone_content file that is most recent
-and download it into the local folder downloaded_files.
+and download it into the local folder generated_files.
 Recency is determined by the date components inside the file name. 
 
 Refer to SFTP.md for connectity details.

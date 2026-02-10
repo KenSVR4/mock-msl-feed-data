@@ -69,7 +69,7 @@ Or use the Databricks UI: Workspace → Settings → Secrets
 ```python
 EMPLOYEES_FILE = "input/employees.csv"
 OUTPUT_DIR = "generated_files"
-SFTP_LOCAL_DIR = "downloaded_files"
+SFTP_LOCAL_DIR = "generated_files"
 ```
 
 ### Databricks Approach
@@ -79,7 +79,7 @@ Use DBFS paths:
 # DBFS paths (accessible via /dbfs/ prefix)
 EMPLOYEES_FILE = "/dbfs/FileStore/btc_simulation/input/employees.csv"
 OUTPUT_DIR = "/dbfs/FileStore/btc_simulation/generated_files"
-SFTP_LOCAL_DIR = "/dbfs/FileStore/btc_simulation/downloaded_files"
+SFTP_LOCAL_DIR = "/dbfs/FileStore/btc_simulation/generated_files"
 
 # Alternative: Use dbfs:// protocol (for dbutils operations)
 # EMPLOYEES_FILE = "dbfs:/FileStore/btc_simulation/input/employees.csv"
@@ -105,7 +105,6 @@ databricks fs cp docs/sample_files/UserCompletion_v2_YYYY_m_d_1_000001.csv dbfs:
 # Create directories
 dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/input")
 dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/generated_files")
-dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/downloaded_files")
 ```
 
 ### Update File Template Path
@@ -233,8 +232,8 @@ If SFTP access is restricted, download files externally and upload to DBFS:
 
 ```python
 # Instead of downloading from SFTP, read from DBFS
-course_catalog_path = "/dbfs/FileStore/btc_simulation/downloaded_files/CourseCatalog_V2_2026_1_20_1_65ccb9.csv"
-standalone_content_path = "/dbfs/FileStore/btc_simulation/downloaded_files/StandAloneContent_v2_2026_1_20_1_acbffc.csv"
+course_catalog_path = "/dbfs/FileStore/btc_simulation/generated_files/CourseCatalog_V2_2026_1_20_1_65ccb9.csv"
+standalone_content_path = "/dbfs/FileStore/btc_simulation/generated_files/StandAloneContent_v2_2026_1_20_1_acbffc.csv"
 ```
 
 ---

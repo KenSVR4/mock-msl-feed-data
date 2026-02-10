@@ -49,7 +49,7 @@ This document describes all configurable environment variables for the BTC Fake 
 |----------|----------|---------|-------------|
 | `EMPLOYEES_FILE` | No | `input/employees.csv` | Path to employees input file |
 | `OUTPUT_DIR` | No | `generated_files` | Output directory for generated files |
-| `SFTP_LOCAL_DIR` | No | `downloaded_files` | Local directory for downloaded files |
+| `SFTP_LOCAL_DIR` | No | `generated_files` | Local directory for downloaded files |
 | `USER_COMPLETION_TEMPLATE_FILE` | No | `docs/sample_files/UserCompletion_v2_YYYY_m_d_1_000001.csv` | Template file path |
 
 💡 **TIP**: Use different employee files for different test scenarios
@@ -293,7 +293,7 @@ API_TIMEOUT = 30
 
 EMPLOYEES_FILE = "input/employees.csv"
 OUTPUT_DIR = "generated_files"
-SFTP_LOCAL_DIR = "downloaded_files"
+SFTP_LOCAL_DIR = "generated_files"
 USER_COMPLETION_TEMPLATE_FILE = "docs/sample_files/UserCompletion_v2_YYYY_m_d_1_000001.csv"
 
 DATABRICKS_CATALOG = "retail_systems_dev"
