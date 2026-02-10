@@ -17,7 +17,7 @@
 |----------|--------------|-------------------|-------------------|
 | `EMPLOYEES_FILE` | `input/employees.csv` | ⚠️ MAYBE - Different test datasets | MEDIUM PRIORITY |
 | `OUTPUT_DIR` | `generated_files` | ⚠️ MAYBE - Different output locations | LOW PRIORITY |
-| `SFTP_LOCAL_DIR` | `downloaded_files` | ⚠️ MAYBE - Different download locations | LOW PRIORITY |
+| `SFTP_LOCAL_DIR` | `generated_files` | ⚠️ MAYBE - Different download locations | LOW PRIORITY |
 | Template path | `docs/sample_files/UserCompletion_v2_YYYY_m_d_1_000001.csv` | ⚠️ MAYBE - Different templates per env | LOW PRIORITY |
 
 **Impact**: Paths might vary between local development, testing, and production environments.

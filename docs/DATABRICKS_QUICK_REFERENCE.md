@@ -13,7 +13,7 @@ load_dotenv()
 
 EMPLOYEES_FILE = "input/employees.csv"
 OUTPUT_DIR = "generated_files"
-SFTP_LOCAL_DIR = "downloaded_files"
+SFTP_LOCAL_DIR = "generated_files"
 
 # SFTP Inbound Configuration
 SFTP_INBOUND_HOST = os.getenv("SFTP_INBOUND_HOST", "sftp.sephora.com")
@@ -56,7 +56,7 @@ API_ENDPOINT = "/public/api/v1/mltr/v3/run"
 # DBFS File Paths
 EMPLOYEES_FILE = "/dbfs/FileStore/btc_simulation/input/employees.csv"
 OUTPUT_DIR = "/dbfs/FileStore/btc_simulation/generated_files"
-SFTP_LOCAL_DIR = "/dbfs/FileStore/btc_simulation/downloaded_files"
+SFTP_LOCAL_DIR = "/dbfs/FileStore/btc_simulation/generated_files"
 
 # SFTP Inbound Server Configuration
 SFTP_INBOUND_HOST = "sftp.sephora.com"
@@ -198,7 +198,6 @@ Add this cell at the beginning (run once):
 # Create required DBFS directories
 dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/input")
 dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/generated_files")
-dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/downloaded_files")
 dbutils.fs.mkdirs("dbfs:/FileStore/btc_simulation/sample_files")
 
 print("✓ DBFS directories created")
@@ -439,7 +438,7 @@ API_ENDPOINT = "/public/api/v1/mltr/v3/run"
 # DBFS File Paths
 EMPLOYEES_FILE = "/dbfs/FileStore/btc_simulation/input/employees.csv"
 OUTPUT_DIR = "/dbfs/FileStore/btc_simulation/generated_files"
-SFTP_LOCAL_DIR = "/dbfs/FileStore/btc_simulation/downloaded_files"
+SFTP_LOCAL_DIR = "/dbfs/FileStore/btc_simulation/generated_files"
 
 # SFTP Inbound Server Configuration
 SFTP_INBOUND_HOST = "sftp.sephora.com"

@@ -28,7 +28,7 @@ Integrates with Sephora's ML Training Recommender API to get personalized traini
 Simulates managers assigning training content to their teams by:
 - Selecting the most recent "Daily Dose" training content
 - Assigning up to 3 training items to all employees
-- Setting realistic assignment windows (Monday start, Saturday due date)
+- Setting realistic assignment windows (Monday start, Saturday due date) The assignment window is a full 7-day week from Monday 1:15 AM to the following Monday 1:03 AM UTC
 
 ## Data Flow
 

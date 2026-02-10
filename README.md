@@ -1,5 +1,22 @@
 # BTC Fake - Training Completion Simulator
 
+## 🌐 Two Ways to Run
+
+**Option 1: Web Interface (Gradio)** - Browser-based UI for non-technical users
+```bash
+python app.py
+# Open http://localhost:7860
+```
+
+**Option 2: Jupyter Notebook** - Code-based workflow for developers
+```bash
+# Open btc_simulation.ipynb in VS Code
+```
+
+📖 **Gradio Setup Guide**: See [GRADIO_SETUP.md](GRADIO_SETUP.md) for complete web interface documentation
+
+---
+
 ## High-Level Summary
 
 BTC Fake is a training data simulator that generates realistic learning management system files by simulating:
@@ -41,11 +58,12 @@ Employees are classified by their engagement level with training. The system sim
 btc_fake/
 ├── input/
 │   └── employees.csv          # Employee population with IDs and types
-├── downloaded_files/          # Downloaded CourseCatalog files from SFTP
-├── generated_files/           # Output directory for ContentUserCompletion files
+├── generated_files/           # Output directory for generated and downloaded files
 ├── docs/                      # Documentation and samples
-├── btc_simulation.ipynb       # Main Jupyter notebook
-├── requirements.txt           # Python dependencies
+├── app.py                     # Gradio web application (NEW!)
+├── btc_simulation.ipynb       # Jupyter notebook (alternative)
+├── requirements.txt           # Python dependencies (includes Gradio)
+├── GRADIO_SETUP.md           # Web interface documentation
 └── README.md                  # This file
 ```
 
@@ -237,7 +255,7 @@ jupyter notebook
 
 The simulation will:
 
-1. **Preprocessing**: Download the most recent CourseCatalog and StandAloneContent files from SFTP server to `downloaded_files/`
+1. **Preprocessing**: Download the most recent CourseCatalog and StandAloneContent files from SFTP server to `generated_files/`
 
 2. **Manager Assignments**:
    - Queries Databricks `content_assignments` AND `content_completion` tables
