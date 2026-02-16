@@ -42,7 +42,7 @@ env/
 .DS_Store
 
 # Generated files
-generated_files/*.csv
+generated_files/
 !generated_files/.gitkeep
 
 # Downloaded files

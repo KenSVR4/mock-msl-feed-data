@@ -1,4 +1,29 @@
-# BTC Fake - Training Completion Simulator
+# BTC Fake - MSL Training Completion Simulator
+
+
+## High-Level Summary
+
+### In a Nutshell
+Run the code here to produce a set of files like the files that the BTC vendor
+produces every day for our Production users. Then use the files as input to the
+DEV or QA version of the MSL daily batch job.
+
+There is an input file (employees.csv) with the IDs of the employees. 
+- Each employee will be assigned three daily doses - unless databricks tables show that in the  current week they already have doses assigned. 
+- Each employee will have course completion records if in the input file the employee is type a (completes all assignments) or type b (completes only one assignment).
+
+
+### Overview
+
+BTC Fake is a training data simulator that generates realistic but small BTC files by simulating:
+- **Employee behavior**: Different engagement levels with training (Type A/B/F employees)
+- **AI recommendations**: Integration with ML Training Recommender API 
+- **Manager assignments**: Dose and other ssignment workflows with start/due dates
+- **Vendor file formats**: Produces ContentUserCompletion and NonCompletedAssignments files in exact vendor format
+
+This enables QA testing, development, and integration testing without production data or vendor dependencies. See [SUMMARY.md](SUMMARY.md) for complete details.
+
+---
 
 ## 🌐 Two Ways to Run
 
@@ -10,35 +35,22 @@ python app.py
 
 **Option 2: Jupyter Notebook** - Code-based workflow for developers
 ```bash
-# Open btc_simulation.ipynb in VS Code
+# Open btc_simulation.ipynb in VS Code or Jupyter
 ```
 
 📖 **Gradio Setup Guide**: See [GRADIO_SETUP.md](GRADIO_SETUP.md) for complete web interface documentation
 
 ---
 
-## High-Level Summary
+## How is Works
 
-BTC Fake is a training data simulator that generates realistic learning management system files by simulating:
-- **Employee behavior**: Different engagement levels with training (Type A/B/F employees)
-- **AI recommendations**: Integration with ML Training Recommender API for personalized suggestions
-- **Manager assignments**: Realistic training assignment workflows with start/due dates
-- **Vendor file formats**: Produces ContentUserCompletion and NonCompletedAssignments files in exact vendor format
-
-This enables QA testing, development, and integration testing without production data or vendor dependencies. See [SUMMARY.md](SUMMARY.md) for complete details.
-
----
-
-This project simulates real-world employees completing training courses and generates ContentUserCompletion files in the format that would normally be produced by BTC (a vendor that knows about our SFTP server and file specs).
-## Project Purpose
-
-The btc_fake project simulates employees who spend time taking training courses. The system:
+The project:
 - Downloads training content files from SFTP server (preprocessing)
-- Reads employee population from CSV
-- Manager assigns training content to all employees
+- Reads employee population from input CSV
+- Emulates a Manager who assigns training content to all employees
 - Generates NonCompletedAssignments CSV file with manager assignments
-- Gets training recommendations from an external API
-- Simulates training completion based on employee type
+- Gets training recommendations from ML Recommendation API
+- Emulates training completion was done; based on employee type
 - Generates ContentUserCompletion CSV files with completion records
 - Updates NonCompletedAssignments file to remove completed assignments
 
@@ -60,12 +72,14 @@ btc_fake/
 │   └── employees.csv          # Employee population with IDs and types
 ├── generated_files/           # Output directory for generated and downloaded files
 ├── docs/                      # Documentation and samples
-├── app.py                     # Gradio web application (NEW!)
+├── app.py                     # Gradio web application
 ├── btc_simulation.ipynb       # Jupyter notebook (alternative)
 ├── requirements.txt           # Python dependencies (includes Gradio)
-├── GRADIO_SETUP.md           # Web interface documentation
+├── GRADIO_SETUP.md            # Web interface documentation
 └── README.md                  # This file
 ```
+
+---
 
 ## Setup Instructions
 
@@ -73,14 +87,11 @@ btc_fake/
 
 - Python 3.8 or higher
 - pip (Python package installer)
-- Jupyter Notebook support (VS Code, Cursor, or browser-based)
+- (If not using Gradio web option) Jupyter Notebook support (VS Code, Cursor, or browser-based)
 
 ### Installation
 
-1. Navigate to the project directory:
-```bash
-cd /Users/khansen/craft/stores/python/python-projects-rdi/btc_fake
-```
+1. Navigate to the project directory
 
 2. Create a virtual environment (recommended):
 ```bash
@@ -107,8 +118,6 @@ This project supports multiple environments (DEV, QA, PROD) with different confi
    # For QA (alternate)
    cp .env.qa.example .env
 
-   # For PROD
-   cp .env.prod.example .env
    ```
 
 2. **Fill in required credentials** in `.env`:
@@ -118,7 +127,7 @@ This project supports multiple environments (DEV, QA, PROD) with different confi
    - `SFTP_INBOUND_PASSWORD`: SFTP inbound server password
 
 3. **Environment-specific values** (already configured in templates):
-   - `API_BASE_URL`: ML Training Recommender API (**different in PROD**)
+   - `API_BASE_URL`: ML Training Recommender API (**different from PROD**)
    - `DATABRICKS_CATALOG`: Catalog name (dev/qa/prod)
    - `SFTP_INBOUND_REMOTE_PATH`: Remote SFTP path (dev/qa/prod)
 
@@ -127,7 +136,7 @@ This project supports multiple environments (DEV, QA, PROD) with different confi
 #### All Configurable Variables
 
 **ML Training Recommender API:**
-- `API_BASE_URL` - API base URL (⚠️ **PROD has `/public` in URL**)
+- `API_BASE_URL` - API base URL
 - `API_ENDPOINT` - API endpoint path
 - `API_TIMEOUT` - Request timeout in seconds
 
@@ -166,14 +175,16 @@ This project supports multiple environments (DEV, QA, PROD) with different confi
 
 **Note**: If Databricks credentials are not configured, the system will skip the Databricks query and only use newly selected manager assignments.
 
+---
+
 ## Preprocessing
 
-Before running the main simulation, you can download files from the SFTP server using either the notebook or the command-line script.
+Code does some processing up front:
 
 ### Files Downloaded:
 
 1. **CourseCatalog** - Training curriculum elements like Courses and components
-2. **StandAloneContent** - All training content (videos, PDFs, documents)
+2. **StandAloneContent** - Training content (videos, PDFs, documents)
 
 **SFTP Inbound Server Configuration:**
 
@@ -182,55 +193,6 @@ All SFTP inbound server settings are configurable via environment variables in `
 - `SFTP_INBOUND_USER`: Username (default: `SephoraMSL`)
 - `SFTP_INBOUND_PASSWORD`: Password (required)
 - `SFTP_INBOUND_REMOTE_PATH`: Remote directory path (default: `/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive`)
-
-**Setup:**
-1. Copy `.env.example` to `.env`
-2. Configure SFTP settings in `.env`:
-   ```bash
-   SFTP_INBOUND_HOST=sftp.sephora.com
-   SFTP_INBOUND_USER=SephoraMSL
-   SFTP_INBOUND_PASSWORD=your_password_here
-   SFTP_INBOUND_REMOTE_PATH=/inbound/BTC/retailData/prod/vendor/mySephoraLearning-archive
-   ```
-3. The defaults will work for most cases - you only need to set `SFTP_INBOUND_PASSWORD`
-
-**File Formats:**
-- CourseCatalog: `CourseCatalog_V2_YYYY_M_DD_1_random.csv`
-- StandAloneContent: `StandAloneContent_v2_YYYY_M_DD_1_random.csv`
-- The system identifies files based on the date in the filename
-
-### Option 1: Using the download.sh Script
-
-Download files for a date range using the command-line script:
-
-```bash
-# Download today's files only (default)
-./download.sh
-
-# Download files from today and yesterday (2 days total)
-./download.sh 1
-
-# Download files from the last 7 days (today through 7 days ago)
-./download.sh 7
-
-# Download files from the last 31 days (today through 31 days ago)
-./download.sh 31
-```
-
-**Requirements:**
-- `lftp` (recommended) or `sshpass` for automated downloads
-- macOS: `brew install lftp`
-- Linux: `sudo apt-get install lftp`
-
-The script will:
-- Connect to the SFTP server
-- Download all files matching the target date patterns
-- Save files to `temp_files/` directory
-- Display a summary of downloaded files
-
-### Option 2: Using the Jupyter Notebook
-
-The notebook (cells 4-5) will automatically download the most recent files when executed
 
 ## Running the Simulation
 
@@ -250,6 +212,8 @@ jupyter notebook
 
 2. Navigate to `btc_simulation.ipynb` in the browser
 3. Run all cells
+
+---
 
 ## Output
 
@@ -302,45 +266,12 @@ The simulation will:
      - Downloaded: CourseCatalog CSV, StandAloneContent CSV
    - Server configured via environment variables (SFTP_OUTBOUND_*)
 
-## Postprocessing - Publishing Files
+---
+
+## Postprocessing - Publishing Files (optional)
 
 After successfully generating output files, the process can optionally publish them to an SFTP outbound server. This step can be enabled or bypassed using a runtime flag.
 
-### Publishing Configuration
-
-**SFTP Outbound Server Settings:**
-
-All SFTP outbound server settings are configurable via environment variables in `.env`:
-- `SFTP_OUTBOUND_HOST`: Server hostname (default: `internal-sftp.sephoraus.com`)
-- `SFTP_OUTBOUND_USER`: Username (default: `SephoraRDIInternal`)
-- `SFTP_OUTBOUND_PASSWORD`: Password (required)
-- `SFTP_OUTBOUND_REMOTE_PATH`: Remote directory path (default: `/inbound/BTC/retailData/prod/vendor/mySephoraLearningV2`)
-- `SFTP_PUBLISH_ENABLED`: Enable/disable publishing (default: `true`)
-
-### Setup for Publishing
-
-1. Configure SFTP outbound settings in `.env`:
-   ```bash
-   SFTP_OUTBOUND_HOST=internal-sftp.sephoraus.com
-   SFTP_OUTBOUND_USER=SephoraRDIInternal
-   SFTP_OUTBOUND_PASSWORD=your_password_here
-   SFTP_OUTBOUND_REMOTE_PATH=/inbound/BTC/retailData/prod/vendor/mySephoraLearningV2
-   SFTP_PUBLISH_ENABLED=true
-   ```
-
-2. The defaults will work for most cases - you only need to set `SFTP_OUTBOUND_PASSWORD`
-
-### Enable/Disable Publishing
-
-To **enable** publishing (upload files after generation):
-```bash
-SFTP_PUBLISH_ENABLED=true
-```
-
-To **disable** publishing (skip upload, only generate files locally):
-```bash
-SFTP_PUBLISH_ENABLED=false
-```
 
 ### Files Published
 
@@ -357,41 +288,12 @@ When publishing is enabled, the following files are uploaded to the SFTP outboun
 
 The files are uploaded to the remote path specified in `SFTP_OUTBOUND_REMOTE_PATH`.
 
+---
+
 ## API Configuration
 
-The simulation uses the Training Recommender API:
-
-- **Endpoint**: `/public/api/v1/mltr/v3/run`
-- **Method**: POST
-- **Default Environment**: https://dataiku-api-devqa.lower.internal.sephora.com
-- **Production**: https://dataiku-api-prod.prod.internal.sephora.com/public
-
-Request payload format:
-```json
-{"data": {"ba_id": 88563}}
-```
-
-## Example Output Files
-
-### ContentUserCompletion File
-
-```csv
-"UserId","ContentId","DateStarted","DateCompleted"
-"104829","1,915,085","2025-12-22T10:43:05Z","2025-12-22T10:47:23Z"
-"151557","892,298","2025-12-22T11:15:30Z","2025-12-22T11:28:45Z"
-```
-
-### NonCompletedAssignments File
-
-```csv
-"UserID","CreateDate_text","RequestId","TrainingElementId","Start_Date_text","DueDate_text","ContentType"
-"100049","2025-12-26T10:52:34Z","25661","1,561,228","2024-12-30T02:15:00Z","2025-01-06T02:00:00Z","Media"
-"100049","2025-01-02T11:52:58Z","25764","39,248","2025-01-06T02:15:00Z","2025-01-13T02:00:00Z","Media"
-```
-
-## Coding Standards
-
-This project follows coding standards from the BAPH project located one folder level up.
+The simulation uses the ML Training Recommender API for each input employee ID
+---
 
 ## Notes
 
@@ -408,3 +310,14 @@ This project follows coding standards from the BAPH project located one folder l
   - Completed assignments are removed from the file
   - Only truly "non-completed" assignments remain
   - If all assignments are completed, the file will contain only headers
+
+---
+
+## Features Roadmap
+
+Future enhancements planned:
+
+- [ ] Databricks query results preview
+- [ ] Simulation history/logs
+- [ ] CSV validation before simulation
+- [ ] Moving the solution into Databricks and scheduling it regularly in QA, Dev
